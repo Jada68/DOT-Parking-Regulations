@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Where to Park?</title>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css" />
+  <script src="https://js.arcgis.com/4.28/"></script>
+  <script src="/Users/jadamacharie/Downloads/DOT Internship/Front End/Parking_Signs.js"></script>
+  <script src="/Users/jadamacharie/Downloads/DOT Internship/Front End/parkinglengths.js"></script>
+  <script src="/Users/jadamacharie/Downloads/DOT Internship/Front End/Hydrants.js"></script>
+  <script src="/Users/jadamacharie/Downloads/DOT Internship/Front End/Curb.js"></script>
+
+  <style>
+   html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background-color: black; 
+  overflow: hidden; /* Hide overflow to prevent scrollbars */
+  border-radius: 20px; /* Add rounded edge */
+}
+  #viewDiv {
+  height: calc(100% - 50px); /* Subtract header height and footer height from viewport height */
+  width: 100%;
+  margin-top: 50px; /* Set margin-top to the height of the header */
+}
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right:0;
+      width:100%; /* Adjust to leave space for buttons */
+      height:12%;
+      background-color:white; /* Set background color of header */
+      color: rgb(7, 42, 74); /* Set text color of header */
+      padding: 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      line-height:50px;
+      text-align-last: left;
+      margin-right: 20%;
+    
+    }
+    
+    .header1 {
+  margin-bottom: 1px; /* Adjust this value to increase or decrease space */
+  font-family: Arial, sans-serif;
+  font-style:normal;
+  font-weight: bold;
+  right:20%;
+  margin-left: 5%;
+}
+
+.header2 {
+  margin-bottom: 1px; /* Adjust this value to increase or decrease space */
+  font-family: Arial, sans-serif;
+  font-style:normal;
+  font-weight: bold;
+  right:20%;
+  margin-left: 5%;
+}
+.p1 {
+  margin-bottom: 1px; /* Adjust this value to increase or decrease space */
+  right:20%;
+  margin-left: 5%;
+  color:white;
+}
+    footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height:2%;
+  background-color: rgb(248, 248, 185);
+  padding: 20px;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+
+.footer-content {
+  max-width: 1200px;
+    margin: 0 auto;
+    height: 120%; /* Adjusted height */
+    line-height: 50px; /* Adjusted line height */
+    color: black; /* Adjusted text color */
+    position: absolute; /* Fixed position within the footer */
+    bottom: 0;
+    top:10%;
+    color:black;
+    left:2%;
+    text-align: left;
+}
+
+.footer-c {
+  max-width: 1200px;
+    margin: 0 auto;
+    height: 120%; /* Adjusted height */
+    line-height: 50px; /* Adjusted line height */
+    color: black; /* Adjusted text color */
+    position: absolute; /* Fixed position within the footer */
+    bottom: 0;
+    right: 5%;
+    color:black;
+    text-align: right;
+}
+.explore-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.explore-link:hover {
+    color: #555;
+}
+
+
+/* Side Panel */
+.sidebar {
+  width: 20%;
+  position: fixed;
+  top: 12%; /* Adjust the top position to leave space from the top */
+  left: 0;
+  height: 71%; /* Adjust height as needed */
+  overflow-x: hidden;
+  background-color:rgb(1, 10, 18);
+  transition: 0.5s;
+  padding-top: 80px; /* Adjust padding-top to lower the content */
+  z-index: 1000; /* Ensure the side panel stays on top */
+  text-align:center;
+  color: white;
+}
+
+/* .sidebar header {
+  top: 12%; /* Adjust the top position to leave space from the top
+  left: 0;
+  text-align:center;
+  color: white; */
+/* }  */
+
+.sidebar h2 {
+  margin: 0;
+  font-size: 20px;
+  color: white; /* Example text color */
+  margin-bottom: 1px; 
+}
+
+.sidebar-card {
+    background-color:rgb(0, 22, 42);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color:white
+}
+
+.sidebar-card h3 {
+    margin-top: 0;
+}
+
+.sidebar-card p {
+    margin-bottom: 0;
+}
+
+.hide-panel-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 8px 16px;
+    background-color:Transparent; /* Green background */
+    color: white; /* White text */
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight:bold;
+    transition: background-color 0.3s ease;
+
+  }
+  .hide-panel-btn:hover {
+    background-color: #45a049; /* Darker green background on hover */
+  }
+
+  .hide-panel-btn::before {
+    content: '\25C0'; /* Unicode for a left-pointing arrow */
+    position: absolute;
+    top: 50%;
+    left: 0.5px;
+    transform: translateY(-50%);
+  }
+
+  .show-panel-btn {
+    position: fixed;
+    top: 20%;
+    left: 2%;
+    padding: 8px 16px;
+    transform: translateY(-50%);
+    display: visible; /* Initially hidden */
+    background-color: #205622; /* Green background */
+    color: white; /* White text */
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight:bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .show-panel-btn:hover {
+    background-color: #45a049; /* Darker green background on hover */
+  }
+
+     
+    #Side_Map{
+      width:100%;
+      height:calc(100% -100px);
+      margin-top:10%;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .colored-text {
+  color: white; 
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  position: absolute;
+  top: 30%;
+  right: 2%;
+}
+
+.nav-buttons button {
+  margin-left: 10px; /* Add some space between buttons */
+  padding: 10px 20px;
+  background-color: transparent;
+  color:rgb(0, 22, 42);
+  text-decoration: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s ease;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  font-size: 16px; /* Adjust the font size as needed */
+}
+
+.nav-buttons button:hover {
+  border-bottom: 5px solid rgb(0, 22, 42);
+}
+
+    
+    .hidden {
+      display: none;
+    }
+
+    .closeBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      color: white;
+    } 
+
+    /* The modal (hidden by default) */
+    .popupModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 76%; /* Adjust width as needed */
+  height: 100%;
+  background-color: rgb(0, 22, 42);
+  color:white;
+  overflow-y: auto;
+  padding: 20px;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.popupContent {
+  margin-bottom: 50px; /* Space for close button */
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.closeBtn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #ccc;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.container1 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.sidebar-card button {
+    background-color: rgb(162, 242, 162); /* Blue */
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.sidebar-card button:hover {
+    background-color: #717273; /* Darker Blue */
+}
+
+
+/* .picture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.picture figure {
+  margin-bottom: 20px;
+}
+
+.picture img {
+  max-width: 100%;
+  height: auto;
+} */
+
+    
+  </style>
+</head>
+<body>
+
+  <header>
+    <!-- Header content goes here -->
+    <h1 class="header1"> NYC DOT Parking Regulations Map</h1>
+      <nav class="nav-buttons">
+        <button onclick="openModal('parkingPopup')" data-modal="parkingPopup">About Parking Regs</button>
+        <button onclick="openModal('mappingPopup')" data-modal="mappingPopup">Mapping Features</button>
+   </nav>
+  </header>
+
+  <div id="viewDiv"></div>
+
+<!--Side Panel -->
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h2>SELECT A MAP</h2>
+    <button class="hide-panel-btn" onclick="hideSidebar()">Hide Panel</button>
+  </div>
+
+  <div class="sidebar-card">
+    <!-- <h3>Section 2</h3> -->
+   <!-- Search input -->
+ <input type="text" id="searchInput" placeholder="Search for a location" oninput="searchMaps()">
+  </div>
+ 
+  <div class="sidebar-card">
+  <!-- <h3>Section1 </h3> -->
+  <button id="layer1Btn">Parking Signs</button>
+  <button id="layer2Btn">Parking Lengths</button>
+  <button id="layer3Btn">Hydrants</button>
+  <button id="layer4Btn">Curbs</button>
+</div>
+
+<div class="sidebar-card">
+  <h3>Have Questions?</h3>
+  <div>
+    <form id="contactForm" action="/submit_contact_form" method="post">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required><br>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required><br>
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" required></textarea><br>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</div>
+</div>
+
+<div>
+<button class="show-panel-btn" onclick="showSidebar()">Show Panel</button>
+</div>
+
+<script>
+  // Define GeoJSON layers
+  var layer1 = new L.GeoJSON(geojsonLayer1);
+  var layer2 = new L.GeoJSON(geojsonLayer2);
+  var layer3 = new L.GeoJSON(geojsonLayer3);
+  var layer4 = new L.GeoJSON(geojsonLayer4);
+
+  // Add layer 1 to the map by default
+  layer1.addTo(view);
+
+  // Add event listeners to toggle layer visibility for layers 2, 3, and 4
+  document.getElementById('layer2Btn').addEventListener('click', function() {
+      if (view.hasLayer(layer2)) {
+          view.removeLayer(layer2);
+      } else {
+          layer2.addTo(view);
+      }
+  });
+
+  document.getElementById('layer3Btn').addEventListener('click', function() {
+      if (view.hasLayer(layer3)) {
+          view.removeLayer(layer3);
+      } else {
+          layer3.addTo(view);
+      }
+  });
+
+  document.getElementById('layer4Btn').addEventListener('click', function() {
+      if (view.hasLayer(layer4)) {
+          view.removeLayer(layer4);
+      } else {
+          layer4.addTo(view);
+      }
+  });
+</script>
+
+<script>
+
+  function hideSidebar() {
+    var sidebar = document.querySelector('.sidebar');
+    sidebar.style.display = 'none';
+    // Show the "Show Panel" button
+    document.querySelector('.show-panel-btn').style.display = 'block';
+  }
+
+  function showSidebar() {
+    var sidebar = document.querySelector('.sidebar');
+    sidebar.style.display = 'block';
+    // Hide the "Show Panel" button
+    document.querySelector('.show-panel-btn').style.display = 'none';
+  }
+
+</script>
+
+<script>
+  function searchMaps() {
+    // Get the input value
+    var searchValue = document.getElementById('searchInput').value.toLowerCase();
+    
+    // Get the sidebar content container
+    var sidebarContent = document.getElementById('sidebarContent');
+    
+    // Get all map selection buttons
+    var mapButtons = sidebarContent.getElementsByTagName('button');
+    
+    // Loop through each button and check if it matches the search value
+    for (var i = 0; i < mapButtons.length; i++) {
+      var button = mapButtons[i];
+      var buttonText = button.textContent.toLowerCase();
+      
+      // Toggle button display based on whether it matches the search value
+      if (buttonText.includes(searchValue)) {
+        button.style.display = 'block';
+      } else {
+        button.style.display = 'none';
+      }
+    }
+  }
+</script>
+
+<!-- Popup Modals -->
+<div id="parkingPopup" class="popupModal">
+  <div class="popupContent">
+    <span class="close" onclick="closeModal('parkingPopup')">&times;</span>
+    <h2>About Map</h2>
+    <p>New York City Department of Transportation (NYC DOT) is responsible for installing most of the signage in the five boroughs of NYC.</p>
+    <p>Parking regulations are represented as signs alaong every curb line that pay display different rules. These rules consist of but not limitied to "No Parking", "No Standing", and  "Pay for Parking" areas.
+    Parking regulations are part of the Traffic Rules and Regulations <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-102231" class="explore-link">NYC Traffic Rules</a>.</p>
+    <p>This map displays parking, pay for parking and no parking areas along every street in community board 1. This was was paid possible by the usage of SQL, Python, and QGIS. 
+      QGIS(Quantum GIS) is a free and open source cross-platform desktop geographic information system application that provides data viewing, editing, and analysis capabilities. 
+      It was used just for that. Geospatial data cleaning, and data visualization was the main objective for the use of QGIS.
+      Structure Query Language (SQL) was used to create the parking lengths between parking regulations factoring regulation direction, location relative to the curbline, and to the closet regulation with the same description.
+    Exporting the parking lengths from SQL and imported it into Python allowed for data visualization and customization. Parking lengths were color coded to represent no parking areas in red, pay for parking areas in blue and free parking in green. </p>
+    <p>Please see some parking regulation examples below.</p>
+
+    <section>
+
+
+    </section>
+  </div>
+</div>
+
+<div id="mappingPopup" class="popupModal">
+  <div class="popupContent">
+    <span class="close" onclick="closeModal('mappingPopup')">&times;</span>
+    <h2>Where to Find the Data</h2>
+    <p>There are various sources to find open data for your projects. One common place to find open data is on government websites. You can also explore data repositories and open data portals.</p>
+    <p>For example, you can visit <a href="https://opendata.cityofnewyork.us/">NYC OpenData</a> to explore a wide range of open datasets provided by the U.S. government.</p>
+    <p>Scroll if needed.</p>
+    <section class="container1">
+      <div class="picture">
+        <figure>
+          <figcaption>Parking Regulation Signs</figcaption>
+          <img src="/Users/jadamacharie/Downloads/Parking.png" alt="Image 1">
+        </figure>
+        <figure>
+          <figcaption>Pavement Edge</figcaption>
+          <img src="/Users/jadamacharie/Downloads/pave.png" alt="Image 2">
+        </figure>
+        <figure>
+          <figcaption>Pedestrian Ramps</figcaption>
+          <img src="/Users/jadamacharie/Downloads/ped.png" alt="Image 3">
+        </figure>
+      </div>
+    </section>  
+  </div>
+</div>
+
+<script>
+  function openModal(id) {
+    var modal = document.getElementById(id);
+    modal.style.display = "block";
+    modal.style.right = "0"; // Position the modal to the right
+  }
+  
+  function closeModal(id) {
+    var modal = document.getElementById(id);
+    modal.style.display = "none";
+  }
+  
+  function togglePopupModal(id) {
+    var modal = document.getElementById(id);
+    if (modal.style.display === "none" || modal.style.display === "") {
+      modal.style.display = "block";
+      modal.style.right = "0"; // Position the modal to the right
+    } else {
+      modal.style.display = "none";
+    }
+  }
+  
+  // Close the modal when clicking outside of it
+  window.onclick = function(event) {
+    var modals = document.getElementsByClassName("popupModal");
+    for (var i = 0; i < modals.length; i++) {
+      var modal = modals[i];
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  }
+</script>
+
+ 
+
+  <footer>
+    <div class="footer-content">
+<!-- <p>Explore More Data on <a href="https://opendata.cityofnewyork.us/" class="explore-link">NYC OpenData</a></p> -->
+<p1>Using Python to Map Parking Regulation Signs to the Curb in Near Real-Time!</p1> 
+    </div> 
+
+    <div class="footer-c">
+      <p> A Project of Parking Regulation Mapping</p>
+    </div>
+  </footer>
+
+
+
+      <script>
+        const test_blob = new Blob([JSON.stringify(data3)], {
+          type: "application/json"
+        });
+      
+        const test_url = URL.createObjectURL(test_blob);
+      
+        require(["esri/Map", "esri/views/MapView","esri/layers/GeoJSONLayer", "esri/widgets/Popup", "esri/widgets/Legend","esri/widgets/Search"], (Map, MapView, GeoJSONLayer, Popup,Legend,Search) => {
+          const map = new Map({
+            basemap: "topo-vector"
+          });
+      
+          const view = new MapView({
+            container: "viewDiv",
+            map: map,
+            zoom: 14, // Adjust zoom level as needed
+            center: [-74.0060, 40.7128], // Adjust center coordinates as needed
+          });
+
+          // Add search widget
+      var searchWidget = new Search({
+        view: view,
+        container: "searchInput"
+      });
+
+      // Add an event listener to zoom to the selected location
+      searchWidget.on("select-result", function(event) {
+        view.goTo({
+          target: event.result.extent,
+          zoom: 12
+        });
+      });
+    
+
+          const test_renderer = {
+                    type: "simple",
+                    symbol: {
+                        type: "simple-marker",
+                        color: "black",
+                        size: 2,
+                        outline: {
+                            color: "black"
+                        }
+                    },
+                    visible: true
+                };
+    
+        // Load the GeoJSON layer with the popup template
+        const geojsonLayer1 = new GeoJSONLayer({
+            url: test_url,
+            renderer: test_renderer,
+            popupTemplate: {
+        title: "Parking Sign #: {SG_ORDER_N}",
+        content:[ {
+          type:"text",
+        text: "Description: {SIGNDESC1}"},
+
+        {type:"text",
+        text: "{geometry}"
+            }]
+
+    }
+        });
+        
+          map.add(geojsonLayer1);
+
+
+
+
+          // Define the renderer
+var category_renderer = {
+    type: "unique-value",
+    field: "category", // Assuming you have a field named "description"
+    defaultSymbol: { 
+        type: "simple-line",  // Specify the default color here
+        width: 2 // Adjust the width as needed
+    },
+    uniqueValueInfos: [{
+        value: "NO PARKING",
+        symbol: { type: "simple-line", color: "red", width: 2 } // Adjust width as needed
+    }, {
+        value: "NO STANDING",
+        symbol: { type: "simple-line", color: "blue", width: 2 } // Adjust width as needed
+    }, {
+        value: "PAY-BY-CELL",
+        symbol: { type: "simple-line", color: "green", width: 2 } // Adjust width as needed
+    }]
+
+};
+
+
+// Create and add the second GeoJSON layer
+const test_blob2 = new Blob([JSON.stringify(data4)], {
+    type: "application/json"
+});
+const test_url2 = URL.createObjectURL(test_blob2);
+const geojsonLayer2 = new GeoJSONLayer({
+    url: test_url2,
+    renderer: category_renderer,
+    popupTemplate: {
+        // title: "{}",
+        content: [{
+          type:"text",
+        text: "{category}"},
+      {type:"text",
+    text:"{coordinates}"}]
+    }
+});
+
+map.add(geojsonLayer2);
+        
+
+      // Create and add the third (hyrdants) GeoJSON layer
+      const test_renderer5 = {
+                    type: "simple",
+                    symbol: {
+                        type: "simple-marker",
+                        color: "purple",
+                        size: 3,
+                        outline: {
+                            color: "purple"
+                        }
+                    },
+                };
+  const test_blob3 = new Blob([JSON.stringify(data5)], {
+    type: "application/json"
+  });
+  const test_url3 = URL.createObjectURL(test_blob3);
+  const geojsonLayer3 = new GeoJSONLayer({
+    url: test_url3,
+    renderer:test_renderer5,
+    popupTemplate: {
+          title: "Hydrant #: {cb}"
+        }
+  });
+
+  map.add(geojsonLayer3);
+  
+   // Create and add the fourth GeoJSON layer
+
+   const test_renderer6 = {
+                    type: "simple",
+                    symbol: {
+                        type: "line-marker",
+                        color: "orange",
+                        size: 3,
+                        outline: {
+                            color: "orange"
+                        }
+                    },
+                    visible: true
+                };
+
+   const test_blob4 = new Blob([JSON.stringify(data6)], {
+    type: "application/json"
+  });
+  const test_url4 = URL.createObjectURL(test_blob4);
+  const geojsonLayer4 = new GeoJSONLayer({
+    url: test_url4,
+    renderer:test_renderer6
+  });
+
+  map.add(geojsonLayer4);
+
+  var legend = new Legend({
+        view: view,
+        layerInfos: [{
+          layer: featureLayer,
+          title: "Parks Legend"
+        }]
+      });
+
+      view.ui.add(legend, "bottom-right");
+
+
+});  
+      </script>
+
+  <script>
+
+   // Show labels on hover
+view.whenLayerView(geojsonLayer2).then(function(layerView) {
+  view.on("pointer-move", function(event) {
+    view.hitTest(event).then(function(response) {
+      if (response.results.length > 0) {
+        var graphic = response.results.find(function(result) {
+          return result.graphic.layer === geojsonLayer2;
+        });
+        if (graphic && graphic.graphic && graphic.graphic.getAttribute("category")) {
+          view.popup.open({
+            title: graphic.graphic.getAttribute("category"),
+            location: event.mapPoint
+          });
+        }
+      } else {
+        view.popup.close();
+      }
+    });
+  });
+});
+  </script>
+
+
+
+</body>
+</html>
+
+<!-- MUST DO LIST  
+- add zoom level
+SIDE PANEL: 
+
+- second tab should look similiar to a time component like on smoothparking NEED HELP
+- pop ups for each parking sign to show what it is
+- add toggle on and off buttons for layer
+- parking regs should be defaulted on layer all the other layers should be toggled off, add curb cuts and hydrants layers
+**Where possible use API for easier rendering for users**-->
