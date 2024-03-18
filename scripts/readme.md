@@ -1,1 +1,1 @@
-This folder contains the jupiter notebook for the python code and sql server code.  
+This folder contains the jupyter notebook for the python code, the front end code and sql server code.  
