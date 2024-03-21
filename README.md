@@ -26,39 +26,71 @@ We used as many open source tools as possible for this build--QGIS for spatial d
 
 ### Do you anticipate publishing these parking regulations line features on OpenData?
 
-Tha is the plan, but neither Jada or I make that decision--we need to go to the data owners and get the okay.  Matt Garcia, who spoke during presentation is one of those data owners, but there are others that also need to be consulted, hence, no timeline yet.
+That is the plan, but neither Jada or I make that decision--we need to go to the data owners and get the okay.  Matt Garcia, who spoke during presentation is one of those data owners, but there are others that also need to be consulted, hence, no timeline yet.
 
-00:51:00	Amir Hassan:	This is awesome, so this is an enhancement to https://nycdotsigns.net/?
-00:54:00	Sarah Ward (She/Her):	I am new to mapping with SQL and I do not know Python but I am curious. I use ArcPro and tried to user Enterprise for interactive maps but I had problems. I am just generally curious about your experience with various mapping tools and what do you find to be the most seamless for various mapping tasks. I have had problems with ArcPro relating to updates and customer service and I am generally interested in expanding my mapping options.
+### This is awesome, so this is an enhancement to https://nycdotsigns.net/?
+
+We're thinking of it as a separate applicaiton for now. No plans on retiring the OG website.
+
+###  I am just generally curious about your experience with various mapping tools and what do you find to be the most seamless for various mapping tasks. 
+
+I (Maddalena) started with ESRI products, because of course I did--they market their products to every school, public sector agency, and non-profit.  I also learned Transmap and Idrisi products, and a little bit of GRASS.  Once I got into the private sector, I learned just how expensive commerical of the shelf (COTS) software could be, and I started experimenting with other resources like Google Maps, Carto, Mapbox.  My love is web mapping, so that was my sandbox.  When QGIS became popular, I asked my team to use it because we could quickly create Leaflet maps.  
+
+However, I now work in public sector, and we have access to ArcGIS Online.  This makes the ArcGIS Javascript API a viable option for creating frontends--as long as our data lives in REST services (which we create) or as geojson files (which are bigger and slow things down, but still a useful option.  But that doesn't mean that I don't use plotly, React, OpenLayers--use whatever works best I say.
+
+As far as desktop software, I find free open source software (FOSS) to be less intuitive than COTS, which is both good and bad.  A power user can get lots of stuff done with QGIS--it reminds me of the original ArcGIS which required the user to be more savvy.  New products tend to have a better User Interface (UI), which is great for more casual users because it can help them to get started more quickly.  However, both require time to learn how to use it.
+
 00:54:46	diedre brown:	Wonderful work, Jada! The only suggestion I have is to user-test some prototypes of the web app map for varying degrees of vision levels/color maps.
+
 00:54:52	Melissa Vento (DOT):	I had questions about the python portion, when you used geopandas, which portion did you use geopandas for?
+
 00:54:58	Kushal Mukherjee:	Kushal has a question about working with the datasets - What type of performance challenges did you have working wit the large datasets and how did you overcome
+
 00:56:01	lucinachavez:	HI Jada! Terrific work! I am working with CB2 M- who were interested in learning their parking supply and demand. I am not trained on any mapping system so counted by each curb using google earth. I then classified each curb by parking regulation, along with a ton of other data. I will definitely like to follow up and see if there are plan to include other curb usage as that was something I did (measure each restaurant shed/citibike rack) and evening and Sunday parking.
+
 00:56:07	Emily Pramik (IBO):	Can you say a little more about how you were able to reduce query run time?
+
 00:56:21	Jack Rosacker (DCP):	Two questions if there's time: (1) Was there a specific design choice that led to you using the Esri JS API vs Experience Builder or similar, and (2) Looking back, would you have chosen any different tools or techniques?
+
 00:58:45	Casey Smith (DCP):	Curious if you’ve considered containerizing the process in something like docker?
+
 01:01:47	lucinachavez:	Lucina Chavez: chavezlucina1@gmail.com
+
 01:03:28	Jada Grandchamps:	Replying to "Curious if you’ve co..."
 I haven’t thought of that. What is docker?
+
 01:04:19	Dan Levine:	Working at another city agency, I have had similar concerns about publishing processed data that has not been fully QA'ed. great to hear your consideration and thanks for sharing your work in progress!
+
 01:04:32	Bartosz Bonczak:	Great work! Two questions: (1) is signage data available on Open Data is the same as DOT’s SIMS data base - does it also updates daily? (2) Are there plans to incorporate temporal aspect of the parking signs that would lead to something like SpotAngels App does?
+
 01:04:39	Dennis's iPhone (2):	Will there be way to subscribe to changes occurring in parking regulations with in a region or a map of block
+
 01:04:45	Jada Grandchamps:	Replying to "Can you say a little..."
 Building spatial indices creates an organized tree so that SQL isn’t looping through all the data but through specific indices that fit the code
+
 01:06:04	Casey Smith (DCP):	Replying to "Curious if you’ve co..."
 I’m certainly not a docker—but its an open platform that allows you to separate your applications/processes from your own infrastructure to increase processing speeds
+
 01:06:44	Jada Grandchamps:	I used the sqlalchemy package to pull my SQL queries into python
+
 01:08:34	Emily Pramik (IBO):	Replying to "Wonderful work, Jada..."
 colorbrewer could be a good place to start: https://colorbrewer2.org/
+
 01:08:40	Jada Grandchamps:	Replying to "Curious if you’ve co..."
 @Casey Smith (DCP) Thank you. I will definitely look into this
+
 01:09:36	Amir Hassan:	Python Tutorial (w3schools.com)
 @Sarah Ward, this is a great resource that I used to learn Python from
+
 01:10:29	lucinachavez:	Having just spent the past 4 months collecting parking data, I appreciate how multi-pronged this issue is—particularly vis-a-vis congestion pricing and curb management where parking is under crossfire—how do you see this tool benefitting/supporting the public as we enter this new NYC DOT era?
+
 01:14:36	Bartosz Bonczak:	Simply switching to code-based processing (like Python and GeoPandas) might help in performance as it doesn’t need to render all of the data points saving memory. Of course there are other options when moving away from the single machine.
+
 01:17:15	Amir Hassan:	NYC DOT folks, how about roadwalks that are on PANYNJ property, such as JFK, but have NYC DOT signage on it?
+
 01:18:05	Cristina Chen:	Replying to "Wonderful work, Jada..."
 colorblindly is the extension we like to use to view if the colors would look nice in all different types of colorblindness
+
 01:18:54	Cristina Chen:	Replying to "Wonderful work, Jada..."
 we do use colorbrewer often as well to get us started with color schemes!
 
