@@ -40,11 +40,15 @@ However, I now work in public sector, and we have access to ArcGIS Online.  This
 
 As far as desktop software, I find free open source software (FOSS) to be less intuitive than COTS, which is both good and bad.  A power user can get lots of stuff done with QGIS--it reminds me of the original ArcGIS which required the user to be more savvy.  New products tend to have a better User Interface (UI), which is great for more casual users because it can help them to get started more quickly.  However, both require time to learn how to use it.
 
-00:54:46	diedre brown:	Wonderful work, Jada! The only suggestion I have is to user-test some prototypes of the web app map for varying degrees of vision levels/color maps.
+### The only suggestion I have is to user-test some prototypes of the web app map for varying degrees of vision levels/color maps.
 
-00:54:52	Melissa Vento (DOT):	I had questions about the python portion, when you used geopandas, which portion did you use geopandas for?
+Will do!  When in development, we test our app using the Google Chrome's Colorblindly extension.  It lets us view what the colors would look nice in all different types of colorblindness.  We do use colorbrewer often as well to get us started with color schemes--they have palettes that are colorblind friendly.  When we move to production, our ITT team checks for accessibilty of all types before an app goes public.
 
-00:54:58	Kushal Mukherjee:	Kushal has a question about working with the datasets - What type of performance challenges did you have working wit the large datasets and how did you overcome
+### I had questions about the python portion, when you used geopandas, which portion did you use geopandas for?
+
+### What type of performance challenges did you have working wit the large datasets and how did you overcome them?
+
+Hahahahaha we haven't--yet.  We are still playing with the data.  I'm considering a docker, since it may help to distribute the data processing over multiple servers.  Stay tuned to hear about all our trials and tribulations.
 
 00:56:01	lucinachavez:	HI Jada! Terrific work! I am working with CB2 M- who were interested in learning their parking supply and demand. I am not trained on any mapping system so counted by each curb using google earth. I then classified each curb by parking regulation, along with a ton of other data. I will definitely like to follow up and see if there are plan to include other curb usage as that was something I did (measure each restaurant shed/citibike rack) and evening and Sunday parking.
 
@@ -88,10 +92,6 @@ colorbrewer could be a good place to start: https://colorbrewer2.org/
 
 01:17:15	Amir Hassan:	NYC DOT folks, how about roadwalks that are on PANYNJ property, such as JFK, but have NYC DOT signage on it?
 
-01:18:05	Cristina Chen:	Replying to "Wonderful work, Jada..."
-colorblindly is the extension we like to use to view if the colors would look nice in all different types of colorblindness
 
-01:18:54	Cristina Chen:	Replying to "Wonderful work, Jada..."
-we do use colorbrewer often as well to get us started with color schemes!
 
 </details>
