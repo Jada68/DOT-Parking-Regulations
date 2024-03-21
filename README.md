@@ -10,19 +10,19 @@ The pyhon, sql, and front end code is located in the [scripts](https://github.co
 
 <details>
 
-<summary>Question from our Open Data Week 2024 presentation</summary>
+<summary>Question from our Open Data Week 2024 presentation, 20 March 2024</summary>
 
 ### Would love to be able to download these clean layers directly from the web app, if possible :)
 
-We can add a download option on our list of things to do.  However, it might not be necessary since we may decide to upload this data (as is) to open data.  If that is the case, then you can access the data using the SODA api provided.
+We can add a download option on our list of things to do.  However, it might not be necessary since we may decide to upload this data (as is, since it needs A LOT of work, but will get better with time) to Open Data.  If that is the case, then you can access the data using the SODA api provided.
 
 ### Are you able to share contact info?
 
 Sure! You can reach Jada at Jada.Macharie96@myhunter.cuny.edu, and Maddalena at mromano1@dot.nyc.gov
 
-### I’m curious what the front end is built on?
+### I’m curious what the front end is built on? Was there a specific design choice that led to you using the Esri JS API vs Experience Builder or similar? Looking back, would you have chosen any different tools or techniques?
 
-We used as many open source tools as possible for this build--QGIS for spatial dataset exploration, PostGreSQL for the data engineering, and Python for the coding.  For the front end, we went with ESRI's Javascript API because it was easier.  As a student, Jada was able to create a developer account on ArcGIS Online and use the api.  However, the rontend could easily have been built with Open Layers or React.js with a basemap from Carto or Mapbox.  
+We used as many open source tools as possible for this build--QGIS for spatial dataset exploration, PostGreSQL for the data engineering, and Python for the coding.  For the front end, we went with ESRI's Javascript API because it was easier.  As a student, Jada was able to create a developer account on ArcGIS Online and use the api.  Unlike using Experience Builder (which is available with a developer account), the api allows you to customize your interface with both ESRI widgets and bespoke code.  However, the frontend could easily have been built with Open Layers or React.js with a basemap from Carto or Mapbox--in the end, they all use HTML, CSS, and Javascript.
 
 ### Do you anticipate publishing these parking regulations line features on OpenData?
 
@@ -50,7 +50,7 @@ For this project we mainly use it for creating geodataframes and manipulating th
 
 ### What type of performance challenges did you have working with the large datasets and how did you overcome them?
 
-Hahahahaha we haven't--yet.  We are still playing with the data.  I'm considering a docker, since it may help to distribute the data processing over multiple servers.  Stay tuned to hear about all our trials and tribulations.
+Hahahahaha we haven't--yet.  We are still playing with the data.  I'm considering using docker to separate the application from our infrastructure, since it's an open platform and it may help the speed to distribute the data processing over multiple cloud servers.  Stay tuned to hear about all our trials and tribulations.
 
 ### I will definitely like to follow up and see if there are plan to include other curb usage as that was something I did (measure each restaurant shed/citibike rack) and evening and Sunday parking.
 
@@ -58,43 +58,22 @@ There are!  We do plan to make the app more robust, and add more layers, filters
 
 ### Can you say a little more about how you were able to reduce query run time?
 
-Sure...we reduced the size of the dataset U+1F643
+Building spatial indices creates an organized tree so that SQL isn’t looping through all the data but through specific indices that fit the code. Jada used the sqlalchemy package to pull her SQL queries into python. That said...we reduced the size of the dataset too :)  We are still working on reducing runtime, that's why I'm considering haveing Jada implement a docker to our technology stack, so we can containerize the process.  
 
-00:56:21	Jack Rosacker (DCP):	Two questions if there's time: (1) Was there a specific design choice that led to you using the Esri JS API vs Experience Builder or similar, and (2) Looking back, would you have chosen any different tools or techniques?
+### Is signage data available on Open Data is the same as DOT’s SIMS data base - does it also updates daily? Are there plans to incorporate temporal aspect of the parking signs that would lead to something like SpotAngels App does?
 
-00:58:45	Casey Smith (DCP):	Curious if you’ve considered containerizing the process in something like docker?
+Yep, this data is on [Open Data](https://data.cityofnewyork.us/Transportation/Parking-Regulation-Locations-and-Signs/nfid-uabd/about_data). It's a subset of the [Street Sign Work Orders](https://data.cityofnewyork.us/Transportation/Street-Sign-Work-Orders/qt6m-xctn/about_data) data that we export from DOT's Sign Information Management System (SIMS)--a custom database developed in-house using PostGreSQL. The Parking regulations data DOES have a temporal aspect to it, but its buried in the sign description.  We do plan to add a temporal aspect to this, just can't say went just yet.
 
-01:01:47	lucinachavez:	Lucina Chavez: chavezlucina1@gmail.com
+### Will there be way to subscribe to changes occurring in parking regulations with in a region or a map of block?
 
-01:04:19	Dan Levine:	Working at another city agency, I have had similar concerns about publishing processed data that has not been fully QA'ed. great to hear your consideration and thanks for sharing your work in progress!
+Great suggestion.  We will definitely consider it, but no promises.
 
-01:04:32	Bartosz Bonczak:	Great work! Two questions: (1) is signage data available on Open Data is the same as DOT’s SIMS data base - does it also updates daily? (2) Are there plans to incorporate temporal aspect of the parking signs that would lead to something like SpotAngels App does?
+### How do you see this tool benefitting/supporting the public as we enter this new NYC DOT era of congestion pricing?
 
-01:04:39	Dennis's iPhone (2):	Will there be way to subscribe to changes occurring in parking regulations with in a region or a map of block
+I don't know precisely how this will help when it comes to congestion pricing.  Ideally, this will be a tool that can help the public understand all parking regulations in most areas of NYC (there are some private communities that are not under our jurisdiction).  
 
-01:04:45	Jada Grandchamps:	Replying to "Can you say a little..."
-Building spatial indices creates an organized tree so that SQL isn’t looping through all the data but through specific indices that fit the code
+### NYC DOT folks, how about roadways that are on PANYNJ property, such as JFK, but have NYC DOT signage on it?
 
-01:06:04	Casey Smith (DCP):	Replying to "Curious if you’ve co..."
-I’m certainly not a docker—but its an open platform that allows you to separate your applications/processes from your own infrastructure to increase processing speeds
-
-01:06:44	Jada Grandchamps:	I used the sqlalchemy package to pull my SQL queries into python
-
-01:08:34	Emily Pramik (IBO):	Replying to "Wonderful work, Jada..."
-colorbrewer could be a good place to start: https://colorbrewer2.org/
-
-01:08:40	Jada Grandchamps:	Replying to "Curious if you’ve co..."
-@Casey Smith (DCP) Thank you. I will definitely look into this
-
-01:09:36	Amir Hassan:	Python Tutorial (w3schools.com)
-@Sarah Ward, this is a great resource that I used to learn Python from
-
-01:10:29	lucinachavez:	Having just spent the past 4 months collecting parking data, I appreciate how multi-pronged this issue is—particularly vis-a-vis congestion pricing and curb management where parking is under crossfire—how do you see this tool benefitting/supporting the public as we enter this new NYC DOT era?
-
-01:14:36	Bartosz Bonczak:	Simply switching to code-based processing (like Python and GeoPandas) might help in performance as it doesn’t need to render all of the data points saving memory. Of course there are other options when moving away from the single machine.
-
-01:17:15	Amir Hassan:	NYC DOT folks, how about roadwalks that are on PANYNJ property, such as JFK, but have NYC DOT signage on it?
-
-
+This falls out of our jurisdiction, so it will not be included.  Please note that signage follows the guidelines of the Manual on Uniform Traffic Control Devices for Streets and Highways (MUTCD), so it may *look* like its an NYC DOT sign, but actually be under the jurisdiction of another agency or entity.
 
 </details>
