@@ -7,3 +7,19 @@ The New York City (NYC) Department of Transportation (DOT) is responsible for in
 The easiest place to begin is by having a look at our [presentation](https://github.com/Jada68/DOT-Parking-Regulations/blob/main/presentations/Open%20Data%20Week%202024%20presentation_final.pdf) from Open Data Week 2024.  We will have a link to the recording available as soon as it is posted by NYC OTI.  The recording will only be available for NYC employees, so we will provide a breakdown on how we did this project on this page.
 
 The pyhon, sql, and front end code is located in the [scripts](https://github.com/Jada68/DOT-Parking-Regulations/blob/main/scripts/) folder. This is a work in progress, so we will be updating this code frequently.  Let us know is you see a bug or have a suggestion for a feature.
+
+<details>
+
+<summary>Tips for collapsed sections</summary>
+
+### You can add a header
+
+You can add text within a collapsed section. 
+
+You can add an image or a code block, too.
+
+```ruby
+   puts "Hello World"
+```
+
+</details>
