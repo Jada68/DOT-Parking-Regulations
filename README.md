@@ -46,22 +46,25 @@ Will do!  When in development, we test our app using the Google Chrome's Colorbl
 
 ### I had questions about the python portion, when you used geopandas, which portion did you use geopandas for?
 
-### What type of performance challenges did you have working wit the large datasets and how did you overcome them?
+For this project we mainly use it for creating geodataframes and manipulating the data, but I've used it for much more.  If you've never used it, but are curious, check out [this link](https://github.com/geopandas/geopandas?tab=readme-ov-file) for a good description of what geopandas and shapely libraries do.
+
+### What type of performance challenges did you have working with the large datasets and how did you overcome them?
 
 Hahahahaha we haven't--yet.  We are still playing with the data.  I'm considering a docker, since it may help to distribute the data processing over multiple servers.  Stay tuned to hear about all our trials and tribulations.
 
-00:56:01	lucinachavez:	HI Jada! Terrific work! I am working with CB2 M- who were interested in learning their parking supply and demand. I am not trained on any mapping system so counted by each curb using google earth. I then classified each curb by parking regulation, along with a ton of other data. I will definitely like to follow up and see if there are plan to include other curb usage as that was something I did (measure each restaurant shed/citibike rack) and evening and Sunday parking.
+### I will definitely like to follow up and see if there are plan to include other curb usage as that was something I did (measure each restaurant shed/citibike rack) and evening and Sunday parking.
 
-00:56:07	Emily Pramik (IBO):	Can you say a little more about how you were able to reduce query run time?
+There are!  We do plan to make the app more robust, and add more layers, filters, and other ways to parse the data.  As of 3/20/2024, we have figured out how to map to the curbline, and we are currently working on a frontend to display that.  Baby steps.
+
+### Can you say a little more about how you were able to reduce query run time?
+
+Sure...we reduced the size of the dataset U+1F643
 
 00:56:21	Jack Rosacker (DCP):	Two questions if there's time: (1) Was there a specific design choice that led to you using the Esri JS API vs Experience Builder or similar, and (2) Looking back, would you have chosen any different tools or techniques?
 
 00:58:45	Casey Smith (DCP):	Curious if you’ve considered containerizing the process in something like docker?
 
 01:01:47	lucinachavez:	Lucina Chavez: chavezlucina1@gmail.com
-
-01:03:28	Jada Grandchamps:	Replying to "Curious if you’ve co..."
-I haven’t thought of that. What is docker?
 
 01:04:19	Dan Levine:	Working at another city agency, I have had similar concerns about publishing processed data that has not been fully QA'ed. great to hear your consideration and thanks for sharing your work in progress!
 
